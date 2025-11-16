@@ -46,7 +46,7 @@ pg_close($db);
             <li class="nav-item"><a class="nav-link" href="../products.php">Products</a></li>
             <li class="nav-item"><a class="nav-link" href="../cart.php">Cart</a></li>
             <li class="nav-item">
-              <a class="nav-link btn btn-danger text-white ms-2" href="contact.php">
+              <a class="nav-link btn btn-danger text-white ms-2" href="../contact.php">
                 Partner With Us
               </a>
           </li>
