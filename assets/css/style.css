@@ -1,0 +1,36 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+.hero {
+  background: url('../img/hero.jpeg') center/cover no-repeat;
+  min-height: 100vh;
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.navbar-brand {
+  letter-spacing: 1px;
+}
+
+.btn-danger {
+  background-color: #b42a14;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #a02511;
+}
+

@@ -1,0 +1,88 @@
+<?php
+session_start();
+require_once '../config.php';
+
+// BLOCK if not logged in
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: admin-login.php");
+    exit;
+}
+
+// Logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: admin-login.php");
+    exit;
+}
+
+// Fetch contacts
+$db = getDBConnection();
+$result = pg_query($db, "SELECT * FROM contacts ORDER BY created_at DESC");
+$contacts = pg_fetch_all($result);
+pg_close($db);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Messages — Farm2Fork Admin</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="dashboard.php">Farm2Fork Admin</a>
+        <div class="ms-auto">
+            <a href="dashboard.php" class="btn btn-outline-danger">Dashboard</a>
+            <a href="admin-login.php?logout=1" class="btn btn-outline-danger">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <h3 class="text-danger fw-bold mb-4">All Contact Submissions</h3>
+
+    <?php if (!$contacts): ?>
+        <p>No messages found.</p>
+    <?php else: ?>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-danger">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <?php foreach ($contacts as $c): ?>
+                <tr>
+                    <td><?= htmlspecialchars($c['id']); ?></td>
+                    <td><?= htmlspecialchars($c['name']); ?></td>
+                    <td><?= htmlspecialchars($c['phone']); ?></td>
+                    <td><?= htmlspecialchars($c['email']); ?></td>
+                    <td><?= htmlspecialchars($c['type']); ?></td>
+                    <td><?= htmlspecialchars($c['message']); ?></td>
+                    <td><?= htmlspecialchars($c['created_at']); ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+
+        </table>
+    </div>
+
+    <?php endif; ?>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
