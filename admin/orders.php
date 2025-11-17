@@ -10,14 +10,31 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 $db = getDBConnection();
 
-// Fetch all orders (latest first)
-$sql = "SELECT * FROM orders ORDER BY order_date DESC";
-$result = pg_query($db, $sql);
-$orders = pg_fetch_all($result);
+// Search filter
+$search = trim($_GET['search'] ?? "");
+
+// Base query
+$sql = "SELECT * FROM orders";
+
+// If searching, modify query
+if ($search !== "") {
+    $sql .= " WHERE 
+                CAST(id AS TEXT) ILIKE $1 OR 
+                name ILIKE $1 OR 
+                phone ILIKE $1 OR 
+                status ILIKE $1";
+    $result = pg_query_params($db, $sql, ['%' . $search . '%']);
+} else {
+    // Normal view (no search)
+    $sql .= " ORDER BY order_date DESC";
+    $result = pg_query($db, $sql);
+}
+
+// Fetch orders
+$orders = $result ? pg_fetch_all($result) : [];
 
 pg_close($db);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,6 +74,10 @@ pg_close($db);
         border-radius: 10px;
         overflow: hidden;
     }
+
+    .search-box {
+        max-width: 300px;
+    }
 </style>
 </head>
 
@@ -76,7 +97,21 @@ pg_close($db);
 
     <h2 class="title mb-4">📦 All Orders</h2>
 
-    <?php if (!$orders): ?>
+    <!-- 🔍 Search Bar -->
+    <form method="GET" class="mb-4">
+        <input type="text"
+               name="search"
+               class="form-control search-box d-inline-block"
+               placeholder="Search orders..."
+               value="<?= htmlspecialchars($search) ?>">
+        <button class="btn btn-farm ms-2">Search</button>
+
+        <?php if ($search !== ""): ?>
+            <a href="orders.php" class="btn btn-outline-secondary ms-2">Clear</a>
+        <?php endif; ?>
+    </form>
+
+    <?php if (empty($orders)): ?>
         <div class="alert alert-warning">No orders found.</div>
 
     <?php else: ?>
@@ -91,6 +126,7 @@ pg_close($db);
                         <th>Payment</th>
                         <th>Total (₹)</th>
                         <th>Date</th>
+                        <th>Status</th>
                         <th>Items</th>
                     </tr>
                 </thead>
@@ -102,9 +138,14 @@ pg_close($db);
                         <td><?= htmlspecialchars($o['name']) ?></td>
                         <td><?= htmlspecialchars($o['phone']) ?></td>
                         <td><?= nl2br(htmlspecialchars($o['address'])) ?></td>
-                        <td><?= $o['payment_method'] ?></td>
+                        <td><?= htmlspecialchars($o['payment_method']) ?></td>
+
                         <td class="fw-bold text-danger">₹<?= $o['total_amount'] ?></td>
                         <td><?= $o['order_date'] ?></td>
+
+                        <td>
+                            <?= htmlspecialchars($o['status']) ?>
+                        </td>
 
                         <td>
                             <a href="order-details.php?id=<?= $o['id'] ?>" class="btn btn-sm btn-farm">
@@ -114,6 +155,7 @@ pg_close($db);
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
+
             </table>
         </div>
     <?php endif; ?>
