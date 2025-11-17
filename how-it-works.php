@@ -37,7 +37,7 @@ session_start();
 
             <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
-            <li class="nav-item"><a class="nav-link active" href="how-it-works.php">How It Works</a></li>
+            <li class="nav-item"><a class="nav-link active fw-bold text-danger" href="how-it-works.php">How It Works</a></li>
             <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
             <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
 
