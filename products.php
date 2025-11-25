@@ -80,7 +80,7 @@ style="min-height:40vh; background: linear-gradient(90deg, rgba(180,42,20,0.05),
             <div class="card rounded-4 shadow-sm h-100 text-center">
 
                 <?php if (!empty($p['image'])): ?>
-                    <img src="assets/img/<?php echo htmlspecialchars($p['image']); ?>"
+                    <img src="assets/img/<?php echo htmlspecialchars($p['image']) ; ?>"
                          class="card-img-top"
                          alt="<?php echo htmlspecialchars($p['name']); ?>">
                 <?php endif; ?>

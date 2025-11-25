@@ -121,7 +121,7 @@ pg_close($db);
         <div class="col-md-3">
             <div class="stat-card">
                 <div class="stat-label">Revenue</div>
-                <div class="stat-value">&#8377; <?= $total_revenue ?></div>
+                <div class="stat-value">&#8377;<?=$total_revenue ?></div>
             </div>
         </div>
 

@@ -132,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label class="form-label">You are</label>
                             <select name="type" class="form-select">
                                 <option value="restaurant">Restaurant</option>
+                                <option value="Hotel">Hotel</option>
                                 <option value="farmer">Farmer</option>
                                 <option value="other">Other</option>
                             </select>
