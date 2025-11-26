@@ -1,11 +1,11 @@
 <?php
 // config.php
 
-define('DB_HOST', 'localhost');
-define('DB_PORT', '5432');
-define('DB_NAME', 'farm2fork');
-define('DB_USER', 'farm2fork_user');
-define('DB_PASS', 'Yash1234');
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_PORT', getenv('DB_PORT'));
+define('DB_NAME', getenv('DB_NAME'));
+define('DB_USER', getenv('DB_USER'));
+define('DB_PASS', getenv('DB_PASS'));
 
 function getDBConnection() {
     $connStr = sprintf(
@@ -26,3 +26,4 @@ function getDBConnection() {
 
     return $dbconn;
 }
+?>
