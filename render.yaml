@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: farm2fork
-    env: docker
-    plan: free
-    region: singapore
-    buildCommand: ""
-    startCommand: "apache2-foreground"
-
