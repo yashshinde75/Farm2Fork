@@ -1,8 +1,14 @@
+/* ================================
+   GLOBAL
+================================ */
 body {
   font-family: 'Poppins', sans-serif;
   scroll-behavior: smooth;
 }
 
+/* ================================
+   HERO SECTION
+================================ */
 .hero {
   background: url('../img/hero.jpeg') center/cover no-repeat;
   min-height: 100vh;
@@ -12,7 +18,10 @@ body {
 .hero::before {
   content: "";
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
   background: rgba(0, 0, 0, 0.45);
 }
 
@@ -21,6 +30,9 @@ body {
   z-index: 2;
 }
 
+/* ================================
+   BRAND & BUTTONS
+================================ */
 .navbar-brand {
   letter-spacing: 1px;
 }
@@ -33,4 +45,120 @@ body {
 .btn-danger:hover {
   background-color: #a02511;
 }
+
+/* ================================
+   ACCOUNT ICON (DESKTOP)
+================================ */
+.account-icon {
+  font-size: 1.9rem;
+  margin-left: 12px;
+}
+
+/* ================================
+   NAVBAR TOGGLER FIX
+================================ */
+.navbar .navbar-toggler {
+  border: none;
+}
+
+.navbar .navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* ================================
+   ✅ MOBILE RESPONSIVE FIXES
+================================ */
+@media (max-width: 991.98px) {
+
+  .navbar {
+    height: 56px;
+    padding-inline: 12px;
+  }
+
+  .navbar .container {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-brand {
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  /* ✅ RIGHT SIDE MOBILE ICONS */
+  .mobile-icons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+  }
+
+  .mobile-icons a,
+  .mobile-icons button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    text-decoration: none;
+  }
+
+  .mobile-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;   /* ✅ THIS IS THE EXACT SPACING FIX */
+}
+
+.mobile-icons i {
+  font-size: 1.4rem;
+  color: #000;
+}
+
+  .mobile-icons button {
+    cursor: pointer;
+  }
+
+  /* ✅ Hide desktop account icon on mobile */
+  .navbar-nav .account-icon {
+    display: none;
+  }
+
+  /* ✅ Mobile hero text fix */
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  /* ================================
+     ✅ WHITE BACKGROUND MOBILE MENU
+  ================================ */
+  #navbarNav {
+    background: #ffffff;             /* ✅ WHITE MENU */
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    padding: 12px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    z-index: 999;
+  }
+
+  #navbarNav .navbar-nav {
+    align-items: flex-start;
+  }
+
+  #navbarNav .nav-link {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+
+}
+
 

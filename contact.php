@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require_once 'config.php';
 
 // Initialize variables
@@ -42,29 +41,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Farm2Fork Onions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#b42a14">
 <link rel="stylesheet" href="assets/css/style.css">
-<style>
-    .account-icon { font-size: 2rem; margin-left: 10px; }
-</style>
-
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- ✅ NAVBAR (SAME AS ALL OTHER PAGES) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
 <div class="container">
 
-    <a class="navbar-brand fw-bold text-danger" href="index.php">Farm2Fork</a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <!-- ✅ HAMBURGER -->
+    <button class="navbar-toggler d-lg-none me-2"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- ✅ LOGO -->
+    <a class="navbar-brand fw-bold text-danger" href="index.php">Farm2Fork</a>
+
+    <!-- ✅ MOBILE ICONS -->
+    <div class="mobile-icons d-lg-none">
+
+        <!-- ADD TO HOME -->
+        <button type="button" title="Add to Home" onclick="showA2HS()">
+            <i class="bi bi-house-add"></i>
+        </button>
+
+        <!-- CART -->
+        <a href="cart.php" title="Cart">
+            <i class="bi bi-cart3"></i>
+        </a>
+
+        <!-- ACCOUNT -->
+        <?php if(isset($_SESSION['user_logged_in'])): ?>
+            <a href="user/account.php" title="My Account">
+                <i class="bi bi-person-circle"></i>
+            </a>
+        <?php else: ?>
+            <a href="user/login.php" title="Login">
+                <i class="bi bi-person-circle"></i>
+            </a>
+        <?php endif; ?>
+
+    </div>
+
+    <!-- ✅ DESKTOP MENU -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
 
@@ -74,9 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
             <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
 
-            <li class="nav-item"><a class="nav-link btn btn-danger text-white ms-2" href="contact.php">Partner With Us</a></li>
-
             <li class="nav-item">
+                <a class="nav-link active fw-bold text-danger btn btn-danger text-white ms-2" href="contact.php">
+                    Partner With Us
+                </a>
+            </li>
+
+            <!-- ✅ DESKTOP ACCOUNT ICON -->
+            <li class="nav-item d-none d-lg-block">
                 <?php if(isset($_SESSION['user_logged_in'])): ?>
                     <a class="nav-link p-0" href="user/account.php">
                         <i class="bi bi-person-circle account-icon"></i>
@@ -94,18 +128,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </nav>
 
-
-<main class="container" style="padding-top:90px; padding-bottom:60px;">
+<!-- ✅ MAIN CONTENT -->
+<main class="container" style="padding-top:110px; padding-bottom:60px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
 
             <?php if ($success): ?>
-                <div class="alert alert-success">✅ Thanks — we received your message. We'll contact you soon.</div>
+                <div class="alert alert-success">
+                    ✅ Thanks — we received your message. We'll contact you soon.
+                </div>
 
             <?php else: ?>
 
                 <?php if ($error): ?>
-                    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                    <div class="alert alert-danger">
+                        <?= htmlspecialchars($error) ?>
+                    </div>
                 <?php endif; ?>
 
                 <div class="card p-4 shadow-sm">
@@ -140,10 +178,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="mb-3">
                             <label class="form-label">Message *</label>
-                            <textarea name="message" rows="4" class="form-control" required></textarea>
+                            <textarea name="message"
+                                      rows="4"
+                                      class="form-control"
+                                      required></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-danger">Send Message</button>
+                        <button type="submit" class="btn btn-danger w-100">
+                            Send Message
+                        </button>
 
                     </form>
                 </div>
@@ -154,8 +197,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </main>
 
-
-
+<!-- ✅ SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/pwa.js"></script>
+</body>
+</html>
+
+
 </body>
 </html>

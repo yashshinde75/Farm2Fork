@@ -2,9 +2,9 @@
 session_start();
 require_once "../config.php";
 
-// Admin authentication check
+// ✅ Admin authentication check (FIXED redirect)
 if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
+    header("Location: admin-login.php");
     exit;
 }
 
@@ -40,6 +40,7 @@ pg_close($db);
 <head>
 <meta charset="UTF-8">
 <title>Orders — Farm2Fork Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -59,14 +60,12 @@ pg_close($db);
         background: #b42a14;
         color: white;
         border-radius: 6px;
+        padding: 6px 14px;
     }
 
     .btn-farm:hover {
         background: #a22310;
-    }
-
-    .card {
-        border-radius: 12px;
+        color: #fff;
     }
 
     table {
@@ -76,47 +75,73 @@ pg_close($db);
     }
 
     .search-box {
-        max-width: 300px;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    /* ✅ Mobile improvements */
+    @media (max-width: 576px) {
+        .title {
+            font-size: 1.4rem;
+        }
     }
 </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-light bg-white shadow-sm px-4">
-    <span class="navbar-brand fw-bold fs-4 text-danger">Farm2Fork Admin</span>
+<!-- ✅ RESPONSIVE NAVBAR -->
+<nav class="navbar navbar-light bg-white shadow-sm px-3 px-md-4 d-flex justify-content-between align-items-center">
+    <span class="navbar-brand fw-bold fs-5 fs-md-4 text-danger">
+        Farm2Fork Admin
+    </span>
 
-    <div>
-        <a href="dashboard.php" class="btn btn-outline-danger">Dashboard</a>
-        <a href="admin-login.php?logout=1" class="btn btn-outline-danger">Logout</a>
+    <div class="d-flex gap-2">
+        <a href="dashboard.php" class="btn btn-outline-danger btn-sm">
+            Dashboard
+        </a>
+        <a href="admin-login.php?logout=1" class="btn btn-outline-danger btn-sm">
+            Logout
+        </a>
     </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container mt-4">
 
-    <h2 class="title mb-4">📦 All Orders</h2>
+    <h2 class="title mb-4 text-center text-md-start">
+        📦 All Orders
+    </h2>
 
-    <!-- 🔍 Search Bar -->
-    <form method="GET" class="mb-4">
+    <!-- ✅ RESPONSIVE SEARCH BAR -->
+    <form method="GET" class="mb-4 d-flex flex-column flex-md-row gap-2 align-items-stretch align-items-md-center">
+
         <input type="text"
                name="search"
-               class="form-control search-box d-inline-block"
+               class="form-control search-box"
                placeholder="Search orders..."
                value="<?= htmlspecialchars($search) ?>">
-        <button class="btn btn-farm ms-2">Search</button>
 
-        <?php if ($search !== ""): ?>
-            <a href="orders.php" class="btn btn-outline-secondary ms-2">Clear</a>
-        <?php endif; ?>
+        <div class="d-flex gap-2">
+            <button class="btn btn-farm">Search</button>
+
+            <?php if ($search !== ""): ?>
+                <a href="orders.php" class="btn btn-outline-secondary">Clear</a>
+            <?php endif; ?>
+        </div>
+
     </form>
 
     <?php if (empty($orders)): ?>
-        <div class="alert alert-warning">No orders found.</div>
+
+        <div class="alert alert-warning text-center">
+            No orders found.
+        </div>
 
     <?php else: ?>
+
+        <!-- ✅ RESPONSIVE ORDERS TABLE -->
         <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-bordered table-hover align-middle text-nowrap small">
                 <thead class="table-danger">
                     <tr>
                         <th>ID</th>
@@ -137,18 +162,28 @@ pg_close($db);
                         <td><?= $o['id'] ?></td>
                         <td><?= htmlspecialchars($o['name']) ?></td>
                         <td><?= htmlspecialchars($o['phone']) ?></td>
-                        <td><?= nl2br(htmlspecialchars($o['address'])) ?></td>
+
+                        <td style="max-width:260px; white-space:normal;">
+                            <?= nl2br(htmlspecialchars($o['address'])) ?>
+                        </td>
+
                         <td><?= htmlspecialchars($o['payment_method']) ?></td>
 
-                        <td class="fw-bold text-danger">₹<?= $o['total_amount'] ?></td>
-                        <td><?= $o['order_date'] ?></td>
+                        <td class="fw-bold text-danger">
+                            ₹<?= $o['total_amount'] ?>
+                        </td>
+
+                        <td class="text-nowrap">
+                            <?= $o['order_date'] ?>
+                        </td>
 
                         <td>
                             <?= htmlspecialchars($o['status']) ?>
                         </td>
 
                         <td>
-                            <a href="order-details.php?id=<?= $o['id'] ?>" class="btn btn-sm btn-farm">
+                            <a href="order-details.php?id=<?= $o['id'] ?>" 
+                               class="btn btn-sm btn-farm">
                                 View Items
                             </a>
                         </td>
@@ -158,8 +193,10 @@ pg_close($db);
 
             </table>
         </div>
+
     <?php endif; ?>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

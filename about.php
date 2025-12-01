@@ -1,7 +1,6 @@
 <?php
 session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,28 +11,55 @@ session_start();
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#b42a14">
   <link rel="stylesheet" href="assets/css/style.css" />
-
-  <style>
-    .account-icon {
-        font-size: 1.9rem;
-        margin-left: 10px;
-    }
-  </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
+<!-- ✅ NAVBAR (SAME AS INDEX) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
   <div class="container">
 
-    <a class="navbar-brand fw-bold text-danger" href="index.php">Farm2Fork</a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <!-- ✅ HAMBURGER (MOBILE) -->
+    <button class="navbar-toggler d-lg-none me-2"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- ✅ LOGO -->
+    <a class="navbar-brand fw-bold text-danger" href="index.php">Farm2Fork</a>
+
+    <!-- ✅ MOBILE ICONS -->
+    <div class="mobile-icons d-lg-none">
+
+      <!-- 1️⃣ ADD TO HOME -->
+      <button type="button" title="Add to Home" onclick="showA2HS()">
+        <i class="bi bi-house-add"></i>
+      </button>
+
+      <!-- 2️⃣ CART -->
+      <a href="cart.php" title="Cart">
+        <i class="bi bi-cart3"></i>
+      </a>
+
+      <!-- 3️⃣ ACCOUNT -->
+      <?php if(isset($_SESSION['user_logged_in'])): ?>
+        <a href="user/account.php" title="My Account">
+          <i class="bi bi-person-circle"></i>
+        </a>
+      <?php else: ?>
+        <a href="user/login.php" title="Login">
+          <i class="bi bi-person-circle"></i>
+        </a>
+      <?php endif; ?>
+
+    </div>
+
+    <!-- ✅ DESKTOP MENU -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
 
@@ -44,20 +70,22 @@ session_start();
         <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
 
         <li class="nav-item">
-          <a class="nav-link btn btn-danger text-white ms-2" href="contact.php">Partner With Us</a>
+          <a class="nav-link btn btn-danger text-white ms-2" href="contact.php">
+            Partner With Us
+          </a>
         </li>
 
-        <li class="nav-item">
-            <!-- If logged in → account page; else → login -->
-            <?php if(isset($_SESSION['user_logged_in'])): ?>
-                <a class="nav-link p-0" href="user/account.php">
-                    <i class="bi bi-person-circle account-icon"></i>
-                </a>
-            <?php else: ?>
-                <a class="nav-link p-0" href="user/login.php">
-                    <i class="bi bi-person-circle account-icon"></i>
-                </a>
-            <?php endif; ?>
+        <!-- ✅ DESKTOP ACCOUNT ICON -->
+        <li class="nav-item d-none d-lg-block">
+          <?php if(isset($_SESSION['user_logged_in'])): ?>
+            <a class="nav-link p-0" href="user/account.php">
+              <i class="bi bi-person-circle account-icon"></i>
+            </a>
+          <?php else: ?>
+            <a class="nav-link p-0" href="user/login.php">
+              <i class="bi bi-person-circle account-icon"></i>
+            </a>
+          <?php endif; ?>
         </li>
 
       </ul>
@@ -66,16 +94,16 @@ session_start();
   </div>
 </nav>
 
-<!-- Page header -->
+<!-- ✅ PAGE HEADER -->
 <header class="page-header d-flex align-items-center"
-        style="min-height:40vh; background: linear-gradient(90deg, rgba(180,42,20,0.05), rgba(47,79,79,0.03));">
+        style="min-height:40vh; background: linear-gradient(90deg, rgba(180,42,20,0.05), rgba(47,79,79,0.03)); margin-top:70px;">
   <div class="container text-center py-5">
     <h1 class="display-5 fw-bold text-danger">Our Story</h1>
     <p class="lead">Building a fair, direct link between Maharashtra farmers and local kitchens.</p>
   </div>
 </header>
 
-<!-- About content -->
+<!-- ✅ ABOUT CONTENT -->
 <section class="py-5">
   <div class="container">
     <div class="row align-items-center g-5">
@@ -106,7 +134,7 @@ session_start();
   </div>
 </section>
 
-<!-- Team section -->
+<!-- ✅ TEAM SECTION -->
 <section class="py-5 bg-light">
   <div class="container text-center">
 
@@ -140,7 +168,7 @@ session_start();
   </div>
 </section>
 
-<!-- Footer -->
+<!-- ✅ FOOTER -->
 <footer class="py-4 text-center text-muted bg-light">
   <div class="container">
     <p class="mb-1">© 2025 Farm2Fork Onions | Made with ❤️ in Maharashtra</p>
@@ -149,5 +177,7 @@ session_start();
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/js/pwa.js"></script>
 </body>
 </html>
