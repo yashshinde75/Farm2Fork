@@ -26,7 +26,6 @@ foreach($cart as $item){
 <link rel="stylesheet" href="assets/css/style.css">
 
 <style>
-  /* ✅ Mobile spacing improvement */
   @media (max-width: 576px) {
     .checkout-title {
       font-size: 1.4rem;
@@ -38,7 +37,7 @@ foreach($cart as $item){
 
 <body>
 
-<!-- ✅ RESPONSIVE NAVBAR -->
+<!-- ✅ NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
   <div class="container">
 
@@ -89,17 +88,35 @@ foreach($cart as $item){
 
           <div class="mb-3">
             <label class="form-label">Full Name</label>
-            <input type="text" name="name" class="form-control" placeholder="Enter your full name" required>
+            <input type="text"
+                   name="name"
+                   class="form-control"
+                   placeholder="Enter your full name"
+                   required>
           </div>
 
+          <!-- ✅ ✅ ✅ FIXED MOBILE NUMBER INPUT (10 DIGITS ONLY) -->
           <div class="mb-3">
             <label class="form-label">Phone Number</label>
-            <input type="text" name="phone" class="form-control" maxlength="10" placeholder="10-digit mobile number" required>
+            <input type="tel"
+                   name="phone"
+                   class="form-control"
+                   placeholder="10-digit mobile number"
+                   maxlength="10"
+                   pattern="[0-9]{10}"
+                   inputmode="numeric"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                   required>
           </div>
+          <!-- ✅ ✅ ✅ -->
 
           <div class="mb-3">
             <label class="form-label">Full Address</label>
-            <textarea name="address" class="form-control" rows="4" placeholder="House no, Street, Village, Taluka, District" required></textarea>
+            <textarea name="address"
+                      class="form-control"
+                      rows="4"
+                      placeholder="House no, Street, Village, Taluka, District"
+                      required></textarea>
           </div>
 
           <h5 class="fw-bold mt-4 mb-2">Payment Method</h5>
