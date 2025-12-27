@@ -1,5 +1,29 @@
 <?php
 session_start();
+$user_id = $_SESSION['user_id'] ?? null;
+
+require_once 'config.php';
+
+$prefill_name = '';
+$prefill_phone = '';
+$prefill_address = '';
+
+if ($user_id !== null) {
+    $db = getDBConnection();
+    $res = pg_query_params(
+        $db,
+        "SELECT name, phone, address FROM orders WHERE user_id = $1 ORDER BY order_date DESC LIMIT 1",
+        [(int)$user_id]
+    );
+    $last_order = $res ? pg_fetch_assoc($res) : null;
+    pg_close($db);
+
+    if ($last_order) {
+        $prefill_name = (string)($last_order['name'] ?? '');
+        $prefill_phone = (string)($last_order['phone'] ?? '');
+        $prefill_address = (string)($last_order['address'] ?? '');
+    }
+}
 $cart = $_SESSION['cart'] ?? [];
 
 // If cart is empty → return to products
@@ -92,6 +116,7 @@ foreach($cart as $item){
                    name="name"
                    class="form-control"
                    placeholder="Enter your full name"
+                   value="<?= htmlspecialchars($prefill_name) ?>"
                    required>
           </div>
 
@@ -102,6 +127,7 @@ foreach($cart as $item){
                    name="phone"
                    class="form-control"
                    placeholder="10-digit mobile number"
+                   value="<?= htmlspecialchars($prefill_phone) ?>"
                    maxlength="10"
                    pattern="[0-9]{10}"
                    inputmode="numeric"
@@ -116,7 +142,7 @@ foreach($cart as $item){
                       class="form-control"
                       rows="4"
                       placeholder="House no, Street, Village, Taluka, District"
-                      required></textarea>
+                      required><?= htmlspecialchars($prefill_address) ?></textarea>
           </div>
 
           <h5 class="fw-bold mt-4 mb-2">Payment Method</h5>
