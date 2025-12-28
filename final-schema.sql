@@ -53,7 +53,9 @@ CREATE TABLE IF NOT EXISTS order_items (
 );
 
 -- CONTACT MESSAGES (FIXED)
-CREATE TABLE IF NOT EXISTS contacts (
+DROP TABLE IF EXISTS contacts;
+
+CREATE TABLE contacts (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     phone VARCHAR(20),
