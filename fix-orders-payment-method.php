@@ -4,14 +4,14 @@ require 'config.php';
 $conn = getDBConnection();
 
 $sql = "
-ALTER TABLE orders
-ADD COLUMN IF NOT EXISTS payment_method VARCHAR(50);
+ALTER TABLE order_items
+ADD COLUMN IF NOT EXISTS product_name VARCHAR(150);
 ";
 
 $result = pg_query($conn, $sql);
 
 if ($result) {
-    echo "payment_method column added successfully";
+    echo "product_name column added to order_items";
 } else {
-    echo "Failed to add payment_method column";
+    echo "Failed to add product_name";
 }
