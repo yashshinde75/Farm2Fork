@@ -1,6 +1,8 @@
 <?php
 session_start();
 $cart = $_SESSION['cart'] ?? [];
+require_once '../auth.php';
+require_login();
 ?>
 <!DOCTYPE html>
 <html lang="en">

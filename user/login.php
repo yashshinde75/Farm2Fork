@@ -1,27 +1,58 @@
 <?php
+// login.php
 session_start();
 require_once "../config.php";
+
+// If already logged in → go home
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    header("Location: ../index.php");
+    exit;
+}
 
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $phone = trim($_POST['phone']);
-    $password = trim($_POST['password']);
 
-    $db = getDBConnection();
-    $sql = "SELECT * FROM users WHERE phone = $1 LIMIT 1";
-    $res = pg_query_params($db, $sql, [$phone]);
-    $user = pg_fetch_assoc($res);
+    $phone = trim($_POST['phone'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_logged_in'] = true;
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
-
-        header("Location: ../index.php");
-        exit;
+    if ($phone === '' || $password === '') {
+        $error = "Please fill all fields.";
     } else {
-        $error = "Invalid phone or password!";
+
+        $db = getDBConnection();
+
+        $sql = "SELECT id, name, phone, password FROM users WHERE phone = $1 LIMIT 1";
+        $res = pg_query_params($db, $sql, [$phone]);
+
+        if ($res && pg_num_rows($res) === 1) {
+            $user = pg_fetch_assoc($res);
+
+            if (password_verify($password, $user['password'])) {
+
+                // 🔐 REGENERATE SESSION (important for stability)
+                session_regenerate_id(true);
+
+                // ✅ SINGLE SOURCE OF TRUTH
+                $_SESSION['logged_in'] = true;
+                $_SESSION['user_id'] = (int)$user['id'];
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_phone'] = $user['phone'];
+
+                // Optional: keep session longer (1 day)
+                ini_set('session.gc_maxlifetime', 86400);
+                session_set_cookie_params(86400);
+
+                // Redirect after login
+                header("Location: ../index.php");
+                exit;
+
+            } else {
+                $error = "Invalid phone or password!";
+            }
+        } else {
+            $error = "Invalid phone or password!";
+        }
     }
 }
 ?>
@@ -92,7 +123,6 @@ body {
     text-decoration: underline;
 }
 
-/* ✅ Mobile tuning */
 @media (max-width: 480px) {
     .brand-title {
         font-size: 24px;
@@ -113,23 +143,36 @@ body {
 
         <?php if ($error): ?>
             <div class="alert alert-danger text-center py-2">
-                <?php echo $error; ?>
+                <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
 
-        <form method="POST">
+        <form method="POST" novalidate>
 
             <div class="mb-3">
                 <label class="form-label">Phone Number</label>
-                <input type="text" name="phone" class="form-control" required maxlength="10">
+                <input
+                    type="text"
+                    name="phone"
+                    class="form-control"
+                    required
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    placeholder="10-digit phone number">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    required>
             </div>
 
-            <button type="submit" class="btn btn-farm w-100 py-2">Login</button>
+            <button type="submit" class="btn btn-farm w-100 py-2">
+                Login
+            </button>
         </form>
 
         <p class="text-center mt-3 small-text">
