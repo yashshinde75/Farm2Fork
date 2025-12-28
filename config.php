@@ -1,19 +1,12 @@
 <?php
-// config.php
-// Central database configuration file (PostgreSQL)
-
-// 1️⃣ Read values from environment variables (cloud-safe)
-// 2️⃣ Fallback to local values if env variables are not set
+// config.php — SAFE & CLOUD READY
 
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_PORT', getenv('DB_PORT') ?: '5432');
 define('DB_NAME', getenv('DB_NAME') ?: 'farm2fork');
 define('DB_USER', getenv('DB_USER') ?: 'farm2fork_user');
-define('DB_PASS', getenv('DB_PASS') ?: 'Yash1234');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 
-/**
- * Returns PostgreSQL database connection
- */
 function getDBConnection() {
 
     $connStr = sprintf(
@@ -25,12 +18,11 @@ function getDBConnection() {
         DB_PASS
     );
 
-    $dbconn = pg_connect($connStr);
+    $dbconn = @pg_connect($connStr);
 
     if (!$dbconn) {
-        // Log error internally, do NOT show to user
-        error_log("Database connection failed: " . pg_last_error());
-        die("Service temporarily unavailable. Please try again later.");
+        error_log("PostgreSQL connection failed. Check credentials & network.");
+        die("Database connection error.");
     }
 
     return $dbconn;
