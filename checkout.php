@@ -36,6 +36,18 @@ $total = 0;
 foreach($cart as $item){
     $total += $item['price'] * $item['quantity'];
 }
+$minOrderQty = 200;
+$totalKg = 0;
+
+foreach ($cart as $item) {
+    $totalKg += $item['quantity'];
+}
+
+$qtyError = '';
+if ($totalKg < $minOrderQty) {
+    $qtyError = "Minimum order quantity is {$minOrderQty} KG. Your current total is {$totalKg} KG.";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +119,11 @@ foreach($cart as $item){
       <div class="card shadow-sm p-4">
 
         <h4 class="fw-bold mb-3">Customer Details</h4>
-
+        <?php if ($qtyError): ?>
+          <div class="alert alert-danger">
+            <?= htmlspecialchars($qtyError) ?>
+          </div>
+        <?php endif; ?>
         <form action="place-order.php" method="POST">
 
           <div class="mb-3">
@@ -157,9 +173,12 @@ foreach($cart as $item){
             <label class="form-check-label text-muted">Online Payment (Coming Soon)</label>
           </div>
 
-          <button type="submit" class="btn btn-danger w-100 btn-lg mt-4">
-            Place Order
-          </button>
+          <button type="submit"
+        class="btn btn-danger w-100 btn-lg mt-4"
+        <?= $qtyError ? 'disabled' : '' ?>>
+  Place Order
+</button>
+
 
         </form>
       </div>

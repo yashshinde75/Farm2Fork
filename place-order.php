@@ -3,6 +3,17 @@ session_start();
 require_once 'config.php';
 $db = getDBConnection();
 
+$minOrderQty = 200;
+$totalKg = 0;
+
+foreach ($_SESSION['cart'] as $item) {
+    $totalKg += $item['quantity'];
+}
+
+if ($totalKg < $minOrderQty) {
+    die("Minimum order quantity is {$minOrderQty} KG.");
+}
+
 $cart = $_SESSION['cart'] ?? [];
 if (empty($cart)) {
     header("Location: products.php");
