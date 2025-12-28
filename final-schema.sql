@@ -52,12 +52,13 @@ CREATE TABLE IF NOT EXISTS order_items (
     subtotal NUMERIC(10,2)
 );
 
--- CONTACT MESSAGES
+-- CONTACT MESSAGES (FIXED)
 CREATE TABLE IF NOT EXISTS contacts (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     phone VARCHAR(20),
     email VARCHAR(150),
+    type VARCHAR(50),
     message TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
