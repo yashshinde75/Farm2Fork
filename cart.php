@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . "/session.php";
+
 $cart = $_SESSION['cart'] ?? [];
 require_once '../auth.php';
 require_login();

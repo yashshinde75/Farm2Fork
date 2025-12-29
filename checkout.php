@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . "/session.php";
 $user_id = $_SESSION['user_id'] ?? null;
 
 require_once 'config.php';

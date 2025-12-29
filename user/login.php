@@ -1,6 +1,6 @@
 <?php
 // login.php
-session_start();
+require_once "../session.php";
 require_once "../config.php";
 
 // If already logged in → go home
@@ -39,10 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_phone'] = $user['phone'];
 
-                // Optional: keep session longer (1 day)
-                ini_set('session.gc_maxlifetime', 86400);
-                session_set_cookie_params(86400);
-
+        
                 // Redirect after login
                 header("Location: ../index.php");
                 exit;
