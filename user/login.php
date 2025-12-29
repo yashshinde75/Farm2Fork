@@ -158,7 +158,7 @@ body {
                     required
                     maxlength="10"
                     pattern="[0-9]{10}"
-                    placeholder="10-digit phone number">
+>
             </div>
 
             <div class="mb-3">
