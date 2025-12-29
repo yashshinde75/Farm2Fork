@@ -60,6 +60,7 @@ if ($totalKg < $minOrderQty) {
 <title>Checkout - Farm2Fork</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#b42a14">
