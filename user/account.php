@@ -1,28 +1,20 @@
 <?php
-// ✅ AUTH FIRST (single source of truth)
-require_once __DIR__ . "/../auth.php";
-require_login();
+require_once __DIR__ . "/session.php";
 
-// ✅ DB
-require_once __DIR__ . "/../config.php";
+require_once '../config.php';
 
-$db = getDBConnection();
-$user_id = (int) $_SESSION['user_id'];
-
-// ✅ SAFE QUERY
-$res = pg_query_params(
-    $db,
-    "SELECT id, name, phone, created_at FROM users WHERE id = $1 LIMIT 1",
-    [$user_id]
-);
-
-if (!$res || pg_num_rows($res) !== 1) {
-    // Session invalid or user deleted → logout safely
-    header("Location: logout.php");
+// If user not logged in → redirect
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit;
 }
 
+$db = getDBConnection();
+$user_id = intval($_SESSION['user_id']);
+
+$res = pg_query_params($db, "SELECT id, name, phone, created_at FROM users WHERE id=$1", [$user_id]);
 $user = pg_fetch_assoc($res);
+
 pg_close($db);
 ?>
 <!DOCTYPE html>
@@ -41,10 +33,11 @@ pg_close($db);
 
 <body>
 
-<!-- ✅ NAVBAR -->
+<!-- ✅ NAVBAR (PIXEL PERFECT SAME AS YOUR CART PAGE) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
 <div class="container">
 
+    <!-- ✅ HAMBURGER -->
     <button class="navbar-toggler d-lg-none me-2"
             type="button"
             data-bs-toggle="collapse"
@@ -52,35 +45,59 @@ pg_close($db);
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- ✅ LOGO -->
     <a class="navbar-brand fw-bold text-danger" href="../index.php">Farm2Fork</a>
 
-    <!-- MOBILE ICONS -->
+    <!-- ✅ MOBILE ICONS (EXACT SAME SPACING AS CART PAGE) -->
     <div class="mobile-icons d-lg-none">
-        <a href="../cart.php" title="Cart"><i class="bi bi-cart3"></i></a>
-        <a href="/user/account.php" title="My Account">
+
+        <button type="button" title="Add to Home" onclick="showA2HS()">
+            <i class="bi bi-house-add"></i>
+        </button>
+
+        <a href="../cart.php" title="Cart">
+            <i class="bi bi-cart3"></i>
+        </a>
+
+        <a href="account.php" title="My Account">
             <i class="bi bi-person-circle"></i>
         </a>
+
     </div>
 
-    <!-- DESKTOP MENU -->
+    <!-- ✅ DESKTOP MENU -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
 
             <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../about.php">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="../how-it-works.php">How It Works</a></li>
             <li class="nav-item"><a class="nav-link" href="../products.php">Products</a></li>
-            <li class="nav-item"><a class="nav-link" href="../cart.php">Cart</a></li>
+            <li class="nav-item">
+          <a class="nav-link" href="../cart.php">Cart</a>
+        </li>
 
-            <li class="nav-item d-none d-lg-block">
-                <a class="nav-link p-0 active" href="/user/account.php">
-                    <i class="bi bi-person-circle" style="color:#b42a14;font-size:22px;"></i>
+
+            <li class="nav-item">
+                <a class="nav-link btn btn-danger text-white ms-2" href="../contact.php">
+                    Partner With Us
                 </a>
             </li>
+
+            <!-- ✅ DESKTOP ACCOUNT ICON (ACTIVE RED) -->
+            <li class="nav-item d-none d-lg-block">
+                <a class="nav-link p-0 active" href="account.php">
+                    <i class="bi bi-person-circle account-icon" style="color:#b42a14;"></i>
+                </a>
+            </li>
+            
+
         </ul>
     </div>
 </div>
 </nav>
 
-<!-- MAIN CONTENT -->
+<!-- ✅ MAIN CONTENT (UNCHANGED) -->
 <div class="container" style="margin-top:110px; max-width:720px;">
     <div class="card p-4 shadow-sm">
 
@@ -100,6 +117,9 @@ pg_close($db);
     </div>
 </div>
 
+<!-- ✅ SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/pwa.js"></script>
+
 </body>
 </html>
