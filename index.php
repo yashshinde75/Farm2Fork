@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . "/session.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@ session_start();
       </a>
 
       <!-- 3️⃣ ACCOUNT (AFTER CART) -->
-      <?php if(isset($_SESSION['user_logged_in'])): ?>
+      <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
         <a href="user/account.php" title="My Account">
           <i class="bi bi-person-circle"></i>
         </a>
@@ -94,7 +94,7 @@ session_start();
 
   <!-- ✅ ACCOUNT ICON -->
   <div class="me-3">
-    <?php if(isset($_SESSION['user_logged_in'])): ?>
+    <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
       <a class="nav-link p-0" href="user/account.php">
         <i class="bi bi-person-circle account-icon"></i>
       </a>
