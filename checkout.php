@@ -3,7 +3,8 @@ require_once __DIR__ . "/session.php";
 $user_id = $_SESSION['user_id'] ?? null;
 
 require_once 'config.php';
-require_once '../auth.php';
+require_once __DIR__ . '/auth.php';
+
 require_login();
 
 
