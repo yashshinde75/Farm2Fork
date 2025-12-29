@@ -52,7 +52,7 @@ require_login();
         </a>
 
         <!-- ACCOUNT -->
-        <?php if(isset($_SESSION['user_logged_in'])): ?>
+        <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
             <a href="user/account.php" title="My Account">
                 <i class="bi bi-person-circle"></i>
             </a>
@@ -84,7 +84,7 @@ require_login();
 
             <!-- ✅ DESKTOP ACCOUNT ICON -->
             <li class="nav-item d-none d-lg-block">
-                <?php if(isset($_SESSION['user_logged_in'])): ?>
+                <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
                     <a class="nav-link p-0" href="user/account.php">
                         <i class="bi bi-person-circle account-icon"></i>
                     </a>
