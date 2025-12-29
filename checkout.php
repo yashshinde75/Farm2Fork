@@ -79,35 +79,81 @@ if ($totalKg < $minOrderQty) {
 
 <!-- ✅ NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-  <div class="container">
+<div class="container">
 
-    <a class="navbar-brand fw-bold text-danger" href="index.php">
-      Farm2Fork
-    </a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
+    <!-- ✅ HAMBURGER -->
+    <button class="navbar-toggler d-lg-none me-2"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
+    <!-- ✅ LOGO -->
+    <a class="navbar-brand fw-bold text-danger" href="index.php">Farm2Fork</a>
 
-        <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="how-it-works.php">How It Works</a></li>
-        <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link active fw-bold text-danger" href="cart.php">Cart</a></li>
+    <!-- ✅ MOBILE ICONS -->
+    <div class="mobile-icons d-lg-none">
 
-        <li class="nav-item">
-          <a class="nav-link btn btn-danger text-white ms-2" href="contact.php">
-            Partner With Us
-          </a>
-        </li>
-      </ul>
+        <!-- ADD TO HOME -->
+        <button type="button" title="Add to Home" onclick="showA2HS()">
+            <i class="bi bi-house-add"></i>
+        </button>
+
+        <!-- CART -->
+        <a href="cart.php" title="Cart">
+            <i class="bi bi-cart3"></i>
+        </a>
+
+        <!-- ACCOUNT -->
+        <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+            <a href="user/account.php" title="My Account">
+                <i class="bi bi-person-circle"></i>
+            </a>
+        <?php else: ?>
+            <a href="user/login.php" title="Login">
+                <i class="bi bi-person-circle"></i>
+            </a>
+        <?php endif; ?>
+
     </div>
 
-  </div>
+    <!-- ✅ DESKTOP MENU -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="how-it-works.php">How It Works</a></li>
+            <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+
+            <li class="nav-item">
+                <a class="nav-link active fw-bold text-danger" href="cart.php">Cart</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link btn btn-danger text-white ms-2" href="contact.php">
+                    Partner With Us
+                </a>
+            </li>
+
+            <!-- ✅ DESKTOP ACCOUNT ICON -->
+            <li class="nav-item d-none d-lg-block">
+                <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+                    <a class="nav-link p-0" href="user/account.php">
+                        <i class="bi bi-person-circle account-icon"></i>
+                    </a>
+                <?php else: ?>
+                    <a class="nav-link p-0" href="user/login.php">
+                        <i class="bi bi-person-circle account-icon"></i>
+                    </a>
+                <?php endif; ?>
+            </li>
+
+        </ul>
+    </div>
+</div>
 </nav>
+
 
 <!-- ✅ CHECKOUT CONTENT -->
 <div class="container py-5" style="margin-top: 90px;">
