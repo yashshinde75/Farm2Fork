@@ -200,7 +200,7 @@ pg_close($db);
           Back to My Orders
         </a>
 
-        <?php if ($order['status'] === "Pending"): ?>
+        <?php if (!in_array($order['status'], ['Delivered', 'Cancelled'])): ?>
         <a href="cancel-order.php?id=<?= $order_id ?>" 
            class="btn btn-danger"
            onclick="return confirm('Are you sure you want to cancel this order?');">
